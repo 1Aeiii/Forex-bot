@@ -8,8 +8,8 @@ from flask import Flask, request
 import threading
 
 # === Load from Environment Variables ===
-from dotenv import python-dotenv
-python-dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = None  # This will be set when you send /start
 
