@@ -1,4 +1,4 @@
-6 put # smc_bot.py - FULL CODE with Environment Variables, Allowed Pairs Filtering, SMC Logic, and TP/SL Calculation
+ # smc_bot.py - FULL CODE with Environment Variables, Allowed Pairs Filtering, SMC Logic, and TP/SL Calculation
 
 import logging
 import os
