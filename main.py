@@ -1,4 +1,4 @@
-# smc_bot.py - FULL CODE with Environment Variables, Allowed Pairs Filtering, SMC Logic, and TP/SL Calculation
+6 put # smc_bot.py - FULL CODE with Environment Variables, Allowed Pairs Filtering, SMC Logic, and TP/SL Calculation
 
 import logging
 import os
@@ -8,6 +8,8 @@ from flask import Flask, request
 import threading
 
 # === Load from Environment Variables ===
+from dotenv import load_dotenv
+load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = None  # This will be set when you send /start
 
