@@ -7,7 +7,7 @@ from telegram.ext import CommandHandler, ApplicationBuilder
 from flask import Flask, request 
 import threading
 
-=== Load from Environment Variables ===
+#=== Load from Environment Variables ===
 
 BOT_TOKEN = os.getenv("BOT_TOKEN") CHAT_ID = None  # This will be set when you send /start
 
