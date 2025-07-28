@@ -1,4 +1,4 @@
- # smc_bot.py - FULL CODE with Environment Variables, Allowed Pairs Filtering, SMC Logic, and TP/SL Calculation
+# smc_bot.py - FULL CODE for Render Hosting, with Allowed Pairs and SMC Logic
 
 import logging
 import os
@@ -8,10 +8,8 @@ from flask import Flask, request
 import threading
 
 # === Load from Environment Variables ===
-from dotenv import load_dotenv
-load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = None  # This will be set when you send /start
+CHAT_ID = None  # Set after /start command
 
 # === Allowed Forex Pairs for SMC Strategy ===
 ALLOWED_PAIRS = ["EURUSD", "NZDUSD", "GBPJPY", "USDJPY", "AUDUSD"]
@@ -19,7 +17,7 @@ ALLOWED_PAIRS = ["EURUSD", "NZDUSD", "GBPJPY", "USDJPY", "AUDUSD"]
 # === Enable logging ===
 logging.basicConfig(level=logging.INFO)
 
-# === Flask App for receiving signals from TradingView ===
+# === Flask App for receiving TradingView signals ===
 app = Flask(__name__)
 bot = Bot(token=BOT_TOKEN)
 
@@ -49,18 +47,10 @@ def signal():
     signal_type = data.get("signal", "").upper()
     try:
         entry = float(data.get("entry", "0"))
-    except ValueError:
-        return "❌ Invalid entry price.", 400
-
-    try:
         sl = float(data.get("sl", "0"))
-    except ValueError:
-        sl = 0.0
-
-    try:
         tp = float(data.get("tp", "0"))
     except ValueError:
-        tp = 0.0
+        return "❌ Invalid entry, SL, or TP values.", 400
 
     reason = data.get("reason", "SMC Strategy")
     bos = data.get("bos", "")
@@ -73,38 +63,4 @@ def signal():
     if sl == 0:
         sl = entry - 0.0010 if signal_type == "BUY" else entry + 0.0010
     if tp == 0:
-        tp = entry + (abs(entry - sl) * risk_reward_ratio) if signal_type == "BUY" else entry - (abs(entry - sl) * risk_reward_ratio)
-
-    # === Format and send Telegram message ===
-    message = f"""
-📊 *Forex Signal Alert*
-
-Pair: {pair}
-Signal: {signal_type}
-Reason: {reason}
-Entry: {entry:.5f}
-SL: {sl:.5f}
-TP: {tp:.5f}
-Risk/Reward: 1:{risk_reward_ratio}
-
-🔍 *SMC Details:*
-Break of Structure: {bos}
-Order Block: {order_block}
-FVG: {fvg}
-Liquidity Sweep: {liquidity_sweep}
-"""
-
-    bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown")
-    return "✅ Signal sent", 200
-
-# === Run Flask and Telegram together ===
-def run_flask():
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
-
-def run_telegram():
-    telegram_app.run_polling()
-
-# === Start both apps ===
-if __name__ == "__main__":
-    threading.Thread(target=run_flask).start()
-    run_telegram()
+        tp = entry + (abs(entry -
