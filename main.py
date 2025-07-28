@@ -1,6 +1,11 @@
 #smc_bot.py - FULL CODE with Environment Variables and Always-On Hosting Support
 
-import logging import os from telegram import Bot from telegram.ext import CommandHandler, ApplicationBuilder from flask import Flask, request import threading
+import logging 
+import os
+from telegram import Bot 
+from telegram.ext import CommandHandler, ApplicationBuilder 
+from flask import Flask, request 
+import threading
 
 === Load from Environment Variables ===
 
